@@ -108,12 +108,12 @@ function updateTime() {
 
 async function fetchPrices() {
   const apis = [
-    "https://query1.finance.yahoo.com/v8/finance/chart/GC=F",
-    "https://query2.finance.yahoo.com/v8/finance/chart/GC=F"
+    "https://corsproxy.io/?url=https://query1.finance.yahoo.com/v8/finance/chart/GC=F",
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://query1.finance.yahoo.com/v8/finance/chart/GC=F")
   ];
   for (const url of apis) {
     try {
-      const r = await fetch(url, {headers:{"User-Agent":"Mozilla/5.0"}});
+      const r = await fetch(url);
       const data = await r.json();
       const spot = data.chart.result[0].meta.regularMarketPrice;
       const base24 = (spot / 31.1035) * USD_TO_OMR;
