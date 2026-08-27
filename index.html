@@ -140,9 +140,16 @@
 
 <script>
 const TOLA = 11.6638;
-const MARKUP = { "24": 0.200, "22": 0.660, "21": 0.800, "18": 0.700 };
-const RATIO  = { "22": 0.925992, "21": 0.885004, "18": 0.760057 };
-const USD_TO_OMR = 0.382479;
+function calcPrices(spot) {
+  return {
+    "24": spot / 92 * 24 / 21 + 0.108,
+    "22": spot / 92 * 22 / 21 + 0.633,
+    "21": spot / 92 + 0.667,
+    "18": spot / 92 * 18 / 21 + 0.654,
+  };
+}
+
+
 
 function updateTime() {
   const now = new Date();
@@ -165,13 +172,7 @@ async function fetchPrices() {
       const r = await fetch(url);
       const data = await r.json();
       const spot = data.chart.result[0].meta.regularMarketPrice;
-      const base24 = (spot / 31.1035) * USD_TO_OMR;
-      const prices = {
-        "24": base24 + MARKUP["24"],
-        "22": base24 * RATIO["22"] + MARKUP["22"],
-        "21": base24 * RATIO["21"] + MARKUP["21"],
-        "18": base24 * RATIO["18"] + MARKUP["18"],
-      };
+      const prices = calcPrices(spot);
       for (const k of ["24","22","21","18"]) {
         document.getElementById("g"+k).textContent = prices[k].toFixed(3);
         document.getElementById("t"+k).textContent = (prices[k] * TOLA).toFixed(3);
