@@ -141,11 +141,12 @@
 <script>
 const TOLA = 11.6638;
 function calcPrices(spot) {
+  const base = spot * 24 / 21 / 91.84;
   return {
-    "24": spot / 92 * 24 / 21,
-    "22": spot / 92 * 22 / 21,
-    "21": spot / 92,
-    "18": spot / 92 * 18 / 21,
+    "24": base,
+    "22": base * 22/24 + 0.6,
+    "21": base * 21/24 + 0.7,
+    "18": base * 18/24 + 0.6,
   };
 }
 
